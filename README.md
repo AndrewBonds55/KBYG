@@ -30,7 +30,7 @@ flask run
 
 This project is organized into several modules:
 
-- `app.py`: the main Flask application
+- `kbyg.py`: the main Flask application (my-project>KBYG>kbyg.py)
 - `models.py`: the SQLAlchemy models for the database
 - `forms.py`: the Flask-WTF forms for handling user input
 - `views.py`: the Flask views for rendering HTML templates
@@ -55,9 +55,6 @@ These entities are related as follows:
 
 This project uses Flask's built-in SQLAlchemy ORM to retrieve and store data in the PostgreSQL database. The `models.py` file defines the database schema and provides methods for querying the database.
 
-## Usage
-
-To use this project, you can navigate to the home page and search for dental offices by zip code. You can also log in as an administrator to add, edit, or delete procedures and dental offices.
 
 
 ## Contact
