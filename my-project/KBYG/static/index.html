@@ -1,0 +1,60 @@
+/ Define the dependencies that need to be injected
+interface Dependencies {
+  dentalProcedureRepository: DentalProcedureRepository;
+}
+
+// Define the function that sets up the dependencies and returns the application
+function bootstrap(dependencies: Dependencies): Application {
+  // Create the application
+  const app = new Application();
+
+  // Add a route to get all dental procedures for a location
+  app.get('/locations/:locationId/dental-procedures', async (req, res) => {
+    const locationId = req.params.locationId;
+
+    // Retrieve the dental procedures for the location using the repository
+    const dentalProcedureRepository = dependencies.dentalProcedureRepository;
+    const dentalProcedures = await dentalProcedureRepository.getDentalProcedures(locationId);
+
+    // Return the dental procedures as a response
+    res.send(dentalProcedures);
+  });
+
+  // Add a route to add a new dental procedure
+  app.post('/locations/:locationId/dental-procedures', async (req, res) => {
+    const locationId = req.params.locationId;
+
+    // Extract the dental procedure information from the request body
+    const { name, cost } = req.body;
+
+    // Add the dental procedure to the location using the repository
+    const dentalProcedureRepository = dependencies.dentalProcedureRepository;
+    await dentalProcedureRepository.addDentalProcedure(locationId, new DentalProcedure(name, cost));
+
+    // Return a success response
+    res.sendStatus(201);
+  });
+
+  return app;
+}
+
+// Dental procedure model
+class DentalProcedure {
+  constructor(public readonly name: string, public readonly cost: number) {}
+}
+
+// Dental procedure repository
+class DentalProcedureRepository {
+  private readonly dentalProceduresByLocationId: Record<string, DentalProcedure[]> = {};
+
+  async addDentalProcedure(locationId: string, dentalProcedure: DentalProcedure): Promise<void> {
+    if (!this.dentalProceduresByLocationId[locationId]) {
+      this.dentalProceduresByLocationId[locationId] = [];
+    }
+    this.dentalProceduresByLocationId[locationId].push(dentalProcedure);
+  }
+
+  async getDentalProcedures(locationId: string): Promise<DentalProcedure[]> {
+    return this.dentalProceduresByLocationId[locationId] || [];
+  }
+}
