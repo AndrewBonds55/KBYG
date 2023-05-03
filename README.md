@@ -32,7 +32,6 @@ This project is organized into several modules:
 
 - `kbyg.py`: the main Flask application (my-project>KBYG>kbyg.py)
 - `models.py`: the SQLAlchemy models for the database
-- `forms.py`: the Flask-WTF forms for handling user input
 - `views.py`: the Flask views for rendering HTML templates
 - `static/`: static files, including CSS and JavaScript
 - `templates/`: HTML templates for rendering the user interface
